@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinite Pop-up</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    
+    .popup {
+        position: absolute;
+        padding: 20px;
+        border: 2px solid #333;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        animation: flash 0.1s infinite;
+    }
+    
+    @keyframes flash {
+        0% { background-color: red; }
+        23% { background-color: purple; }
+        33% { background-color: green; }
+        66% { background-color: blue; }
+        76% { background-color: pink; }
+        100% { background-color: orange; }
+    }
+    
+    .close-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+</style>
+</head>
+<body>
+<script>
+    var popUpCount = 0;
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var interval = setInterval(function() {
+            if(popUpCount < 1000) {
+                var popup = document.createElement('div');
+                popup.className = 'popup';
+                var greekWords = ["Γειά", "Καλημέρα", "Αντίο", "Ευχαριστώ", "Συγγνώμη", "Ναι", "Όχι", "Παρακαλώ"];
+                var randomIndex = Math.floor(Math.random() * greekWords.length);
+                var randomColor = 'rgb(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ')';
+                popup.innerHTML = '<p style="color: white;">' + greekWords[randomIndex] + '</p>';
+                popup.style.backgroundColor = randomColor;
+                popup.style.top = Math.floor(Math.random() * window.innerHeight) + "px";
+                popup.style.left = Math.floor(Math.random() * window.innerWidth) + "px";
+                var closeBtn = document.createElement('span');
+                closeBtn.innerHTML = 'x';
+                closeBtn.className = 'close-btn';
+                closeBtn.onclick = function() {
+                    var newPopup = document.createElement('div');
+                    newPopup.className = 'popup';
+                    newPopup.innerHTML = '<p style="color: white;">' + greekWords[randomIndex] + '</p>';
+                    newPopup.style.backgroundColor = randomColor;
+                    newPopup.style.top = Math.floor(Math.random() * window.innerHeight) + "px";
+                    newPopup.style.left = Math.floor(Math.random() * window.innerWidth) + "px";
+                    document.body.appendChild(newPopup);
+                };
+                popup.appendChild(closeBtn);
+                document.body.appendChild(popup);
+                popUpCount++;
+            } else {
+                clearInterval(interval);
+                var videoPopup = document.createElement('div');
+                videoPopup.className = 'popup';
+                var video = document.createElement('iframe');
+                video.src = 'https://www.youtube.com/embed/x4YMgKO7f3U';
+                video.width = '560';
+                video.height = '315';
+                video.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+                videoPopup.appendChild(video);
+                document.body.appendChild(videoPopup);
+
+                setTimeout(function() {
+                    video.click();
+                }, 1000); // Click on the video after 1 second
+            }
+        }, 0.1);
+    });
+</script>
+</body>
+</html>
+
+
